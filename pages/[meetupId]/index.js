@@ -3,6 +3,26 @@ import Head from 'next/head'
 import { MongoClient, ObjectId } from 'mongodb'
 import MeetupDetail from '../../components/meetups/MeetupDetail'
 
+function MeetupDetails(props) {
+  const { meetupData } = props
+  return (
+    <Fragment>
+      <Head>
+        <title>{meetupData.title}</title>
+        <meta name="description" content={meetupData.description}></meta>
+      </Head>
+      <MeetupDetail
+        image={meetupData.image}
+        title={meetupData.title}
+        address={meetupData.address}
+        description={meetupData.description}
+      />
+    </Fragment>
+  )
+}
+
+export default MeetupDetails
+
 export async function getStaticPaths() {
   const client = await MongoClient.connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dzoke.mongodb.net/meetups?retryWrites=true&w=majority`,
@@ -54,23 +74,3 @@ export async function getStaticProps(context) {
     },
   }
 }
-
-function MeetupDetails(props) {
-  const { meetupData } = props
-  return (
-    <Fragment>
-      <Head>
-        <title>{meetupData.title}</title>
-        <meta name="description" content={meetupData.description}></meta>
-      </Head>
-      <MeetupDetail
-        image={meetupData.image}
-        title={meetupData.title}
-        address={meetupData.address}
-        description={meetupData.description}
-      />
-    </Fragment>
-  )
-}
-
-export default MeetupDetails
